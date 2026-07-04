@@ -1,0 +1,361 @@
+/* ==========================================================
+   BARBEARIA RM - ESTILO DA LOJA
+   ========================================================== */
+
+:root {
+    --bg: #0a0a0a;
+    --bg-card: #1a1a1a;
+    --primary: #D4A84B;
+    --primary-dark: #B8923A;
+    --text: #FFFFFF;
+    --text-secondary: #9CA3AF;
+    --text-muted: #6B7280;
+    --success: #10B981;
+    --danger: #EF4444;
+    --info: #3B82F6;
+    --border: #2a2a2a;
+    --border-light: #333333;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --shadow: 0 4px 16px rgba(0,0,0,0.4);
+    --transition: all 0.3s ease;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Poppins', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: 20px;
+}
+
+/* ===== HEADER DA LOJA ===== */
+.loja-header {
+    background: linear-gradient(180deg, rgba(26,26,26,0.98) 0%, rgba(10,10,10,0.95) 100%);
+    backdrop-filter: blur(20px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid var(--border);
+}
+
+.loja-header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.loja-header-logo {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid var(--primary);
+    box-shadow: 0 0 20px rgba(212,168,75,0.3);
+}
+
+.loja-header-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.loja-header-info h1 { font-size: 16px; font-weight: 700; }
+.loja-header-info p { font-size: 11px; color: var(--primary); letter-spacing: 1px; text-transform: uppercase; }
+
+.loja-header-actions { display: flex; gap: 8px; }
+
+.loja-header-btn {
+    width: 38px; height: 38px; border-radius: 50%;
+    border: 1px solid var(--border-light); background: var(--bg-card);
+    color: var(--text-secondary); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; transition: var(--transition);
+}
+.loja-header-btn:hover { background: var(--primary); color: var(--bg); }
+
+/* ===== MAIN ===== */
+.loja-main {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+/* ===== PERFIL DA LOJA ===== */
+.loja-perfil-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-xl);
+    padding: 30px 20px;
+    text-align: center;
+    border: 1px solid var(--border);
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+}
+
+.loja-perfil-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid var(--primary);
+    margin: 0 auto 16px;
+    box-shadow: 0 0 30px rgba(212,168,75,0.3);
+}
+
+.loja-perfil-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.loja-perfil-card h2 {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.loja-perfil-slogan {
+    font-size: 12px;
+    color: var(--primary);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+}
+
+.loja-perfil-stats {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.loja-perfil-contato {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.loja-perfil-contato p {
+    margin: 4px 0;
+}
+
+.loja-perfil-contato i {
+    color: var(--primary);
+    margin-right: 6px;
+}
+
+/* ===== SEÇÕES ===== */
+.loja-feed, .loja-planos, .loja-agendar {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+}
+
+.loja-feed h3, .loja-planos h3, .loja-agendar h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ===== FEED GRID ===== */
+.loja-feed-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.feed-card {
+    background: var(--bg);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.feed-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-4px);
+}
+
+.feed-card-image {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+}
+
+.feed-card-no-image {
+    width: 100%;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-card);
+    font-size: 40px;
+}
+
+.feed-card-info {
+    padding: 10px;
+}
+
+.feed-card-info h4 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.feed-card-preco {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+/* ===== PLANOS ===== */
+.plano-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: var(--bg);
+    border-radius: var(--radius-md);
+    margin-bottom: 8px;
+    border: 1px solid var(--border);
+}
+
+.plano-item h4 { font-size: 14px; }
+.plano-preco { font-size: 18px; font-weight: 800; color: var(--primary); }
+
+/* ===== INPUTS ===== */
+.input-group {
+    position: relative;
+    margin-bottom: 14px;
+}
+
+.input-group i {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 16px;
+    z-index: 1;
+}
+
+.input-group input,
+.input-group select {
+    width: 100%;
+    padding: 14px 14px 14px 42px;
+    background: var(--bg);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    color: var(--text);
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+/* ===== BOTÕES ===== */
+.btn {
+    padding: 14px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: var(--bg);
+}
+
+.btn-block { width: 100%; }
+
+.btn:hover { transform: translateY(-2px); }
+
+/* ===== TOAST ===== */
+.toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 24px;
+    border-radius: var(--radius-md);
+    color: white;
+    font-weight: 600;
+    font-size: 13px;
+    z-index: 300;
+    animation: slideDown 0.3s ease;
+}
+
+.toast-success { background: var(--success); }
+.toast-error { background: var(--danger); }
+.toast-info { background: var(--info); }
+
+@keyframes slideDown {
+    from { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+    to { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+
+/* ===== EMPTY STATE ===== */
+.empty-state {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-muted);
+}
+
+/* ===== LIGHT MODE ===== */
+body.light-mode {
+    --bg: #f5f5f5;
+    --bg-card: #ffffff;
+    --primary: #B8860B;
+    --primary-dark: #8B6914;
+    --text: #1a1a1a;
+    --text-secondary: #4a4a4a;
+    --text-muted: #666666;
+    --border: #e0e0e0;
+    --border-light: #cccccc;
+}
+
+body.light-mode .loja-header {
+    background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(245,245,245,0.95) 100%);
+}
+
+body.light-mode .loja-header-btn {
+    background: #ffffff;
+    border-color: #e0e0e0;
+    color: #666666;
+}
+
+body.light-mode .input-group input,
+body.light-mode .input-group select {
+    background: #ffffff;
+    border-color: #e0e0e0;
+    color: #1a1a1a;
+}
