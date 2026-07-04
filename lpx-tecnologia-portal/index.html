@@ -2,11 +2,47 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=portal/index.html">
+    <meta http-equiv="refresh" content="0; url=portal/">
     <title>LPX Tecnologia</title>
+    <style>
+        body {
+            background: #0a0a0a;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        a {
+            color: #D4A84B;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .loader {
+            border: 3px solid #333;
+            border-top: 3px solid #D4A84B;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
-    <p>Redirecionando para o portal...</p>
-    <p>Se não for redirecionado, <a href="portal/index.html">clique aqui</a>.</p>
+    <div>
+        <h1>🚀 LPX Tecnologia</h1>
+        <div class="loader"></div>
+        <p>Redirecionando para o portal...</p>
+        <br>
+        <a href="portal/">👉 ENTRAR NO PORTAL 👈</a>
+    </div>
 </body>
 </html>
