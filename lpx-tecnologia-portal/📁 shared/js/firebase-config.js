@@ -1,17 +1,17 @@
 // ==========================================================
-// CONFIGURAÇÃO FIREBASE (COMPARTILHADA)
+// CONFIGURAÇÃO FIREBASE - PORTAL LPX TECNOLOGIA
 // ==========================================================
 const firebaseConfig = {
-    apiKey: "AIzaSyAqN0DZ3fyV-Ns2kXNdwBMAXQgWLy1_jE0",
-    authDomain: "barbearia-rm.firebaseapp.com",
-    projectId: "barbearia-rm",
-    storageBucket: "barbearia-rm.firebasestorage.app",
-    messagingSenderId: "512819922057",
-    appId: "1:512819922057:web:6a913791cb6435e4f63258",
-    measurementId: "G-TKVLVLPBJH"
+  apiKey: "AIzaSyAkJDVFY1cKpkLOi6cFT7e9dvxYCXl-Zj4",
+  authDomain: "portal-lpxtecnologia.firebaseapp.com",
+  projectId: "portal-lpxtecnologia",
+  storageBucket: "portal-lpxtecnologia.firebasestorage.app",
+  messagingSenderId: "260877708533",
+  appId: "1:260877708533:web:3beb78ca4ac3042be329bc",
+  measurementId: "G-5SNTWZET2X"
 };
 
-// Inicializar Firebase (evitar múltiplas inicializações)
+// Inicializar Firebase (versão compat)
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
@@ -25,9 +25,8 @@ db.settings({
     merge: true
 });
 
-console.log('🔥 Firebase inicializado com sucesso!');
+console.log('🔥 Firebase conectado: portal-lpxtecnologia');
 
-// Exportar para uso global
+// Disponibilizar globalmente
 window.db = db;
 window.auth = auth;
-window.firebase = firebase;
