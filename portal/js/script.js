@@ -1,36 +1,175 @@
+// ==========================================================
+// ===== CONFIGURAÇÃO FIREBASE =====
+// ==========================================================
+const firebaseConfig = {
+    apiKey: "AIzaSyAqN0DZ3fyV-Ns2kXNdwBMAXQgWLy1_jE0",
+    authDomain: "barbearia-rm.firebaseapp.com",
+    projectId: "barbearia-rm",
+    storageBucket: "barbearia-rm.firebasestorage.app",
+    messagingSenderId: "512819922057",
+    appId: "1:512819922057:web:6a913791cb6435e4f63258",
+    measurementId: "G-TKVLVLPBJH"
+};
 
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
+const db = firebase.firestore();
+db.settings({ ignoreUndefinedProperties: true });
+console.log('🔥 Firebase OK');
+
+// ==========================================================
+// ===== VARIÁVEIS =====
+// ==========================================================
+var clienteLogado = null;
+var barbeiroLogado = null;
+var lojasCadastradas = [];
+var lojaSelecionada = null;
+var lojaAtualIndex = 0;
+
+const PORTAL_CONFIG = {
+    nome: 'LPX Tecnologia',
+    slogan: 'Inovação que transforma',
+    logo: 'https://via.placeholder.com/100x100/1a1a1a/D4A84B?text=LPX'
+};
+
+// ==========================================================
+// ===== TEMA =====
+// ==========================================================
+function toggleModoEscuro() {
+    document.body.classList.toggle('light-mode');
+    const isLight = document.body.classList.contains('light-mode');
+    localStorage.setItem('barbeariaRM_tema', isLight ? 'light' : 'dark');
+    const icone = document.querySelector('#btnTema i');
+    if (icone) icone.className = isLight ? 'fas fa-sun' : 'fas fa-moon';
+}
+
+function inicializarTema() {
+    if (localStorage.getItem('barbeariaRM_tema') === 'light') {
+        document.body.classList.add('light-mode');
+    }
+}
+
+// ==========================================================
+// ===== TOAST =====
+// ==========================================================
+function mostrarToast(m, t) {
+    const toast = document.getElementById('toast');
+    if (!toast) return;
+    toast.textContent = m;
+    toast.className = 'toast-modern ' + (t || 'info');
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 3000);
+}
+
+// ==========================================================
+// ===== MODAL =====
+// ==========================================================
+function fecharModal(id) {
+    document.getElementById(id).classList.remove('active');
+}
+
+// ==========================================================
+// ===== HEADER =====
+// ==========================================================
+function mostrarHeaderPortal() {
+    document.getElementById('headerLogoImg').src = PORTAL_CONFIG.logo;
+    document.getElementById('headerTitle').textContent = PORTAL_CONFIG.nome;
+    document.getElementById('headerSlogan').textContent = PORTAL_CONFIG.slogan;
+}
+
+// ==========================================================
+// ===== PORTAL DE LOJAS =====
+// ==========================================================
+async function carregarLojasPortal() {
+    const carrossel = document.getElementById('portalCarrossel');
+    if (!carrossel) return;
+    
+    try {
+        const sn = await db.collection('lojas').orderBy('dataCriacao', 'desc').get();
+        lojasCadastradas = sn.docs.map(d => ({ id: d.id, ...d.data() }));
+        
+        if (lojasCadastradas.length === 0) {
+            lojasCadastradas = [{
+                id: 'default', nome: 'LPX Tecnologia', slogan: 'Inovação que transforma',
+                categoria: 'tecnologia', logo: 'https://via.placeholder.com/100x100/1a1a1a/D4A84B?text=LPX',
+                stats: { estrelas: 5.0, cortes: 0, distancia: 0 }
+            }];
+        }
+        
+        carrossel.innerHTML = lojasCadastradas.map((loja, i) => {
+            const icones = { barbearia: '💈', salao: '💇', estetica: '✨', tatuagem: '🎨', petshop: '🐾', tecnologia: '💻', outro: '📦' };
+            const icone = icones[loja.categoria] || '🏪';
+            return `<div class="portal-loja-card" onclick="selecionarLojaPortal(${i})">
+                ${loja.logo ? `<img src="${loja.logo}" class="portal-loja-card-logo">` : `<div class="portal-loja-card-icone">${icone}</div>`}
+                <div class="portal-loja-card-nome">${loja.nome}</div>
+                <div class="portal-loja-card-categoria">${loja.categoria || 'Loja'}</div>
+            </div>`;
+        }).join('');
+        
+        if (lojasCadastradas.length > 0) selecionarLojaPortal(0, false);
+    } catch (e) { console.error('Erro:', e); }
+}
+
+function selecionarLojaPortal(index) {
+    if (index < 0 || index >= lojasCadastradas.length) return;
+    lojaSelecionada = lojasCadastradas[index];
+    lojaAtualIndex = index;
+    
+    document.getElementById('portalNomeLoja').textContent = lojaSelecionada.nome;
+    document.getElementById('portalSloganLoja').textContent = lojaSelecionada.slogan || '';
+    document.getElementById('portalLogo').src = lojaSelecionada.logo || PORTAL_CONFIG.logo;
+    
+    document.querySelectorAll('.portal-loja-card').forEach((c, i) => c.classList.toggle('ativa', i === index));
+}
+
+function entrarNaLoja() {
+    if (!lojaSelecionada) { mostrarToast('❌ Selecione uma loja!', 'error'); return; }
+    
+    localStorage.setItem('barbeariaRM_loja', JSON.stringify({
+        id: lojaSelecionada.id, nome: lojaSelecionada.nome,
+        logo: lojaSelecionada.logo || PORTAL_CONFIG.logo,
+        slogan: lojaSelecionada.slogan || ''
+    }));
+    
+    mostrarToast('🏪 ' + lojaSelecionada.nome + ' - Faça login!', 'success');
+    
+    const container = document.getElementById('loginFormsContainer');
+    if (container) {
+        container.style.display = 'block';
+        document.getElementById('loginFormCliente').style.display = 'block';
+        document.getElementById('loginFormBarbeiro').style.display = 'none';
+        document.querySelectorAll('.login-tab').forEach((t, i) => t.classList.toggle('active', i === 0));
+    }
+}
+
+function switchLoginTab(tipo) {
+    document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('loginFormCliente').style.display = tipo === 'cliente' ? 'block' : 'none';
+    document.getElementById('loginFormBarbeiro').style.display = tipo === 'barbeiro' ? 'block' : 'none';
+    document.querySelector(`.login-tab:nth-child(${tipo === 'cliente' ? 1 : 2})`).classList.add('active');
+}
 
 // ==========================================================
 // ===== FEED DO PORTAL =====
 // ==========================================================
-
-// Carregar todos os posts de todas as lojas
 async function carregarFeedPortal() {
     const container = document.getElementById('portalFeedContainer');
     if (!container) return;
     
     try {
-        const snapshot = await db.collection('posts')
-            .orderBy('dataCriacao', 'desc')
-            .limit(20)
-            .get();
-        
+        const snapshot = await db.collection('posts').orderBy('dataCriacao', 'desc').limit(20).get();
         const posts = [];
-        snapshot.forEach(doc => {
-            posts.push({ id: doc.id, ...doc.data() });
-        });
+        snapshot.forEach(doc => posts.push({ id: doc.id, ...doc.data() }));
         
         if (posts.length === 0) {
-            container.innerHTML = '<p class="empty-state">📸 Nenhum post ainda. As lojas ainda não publicaram.</p>';
+            container.innerHTML = '<p class="empty-state">📸 Nenhum post ainda</p>';
             return;
         }
         
         container.innerHTML = posts.map(post => `
             <div class="portal-feed-card" onclick="verDetalhesPost('${post.id}')">
-                ${post.imagem ? 
-                    `<img src="${post.imagem}" class="portal-feed-card-image" alt="${post.titulo}" onerror="this.style.display='none'">` :
-                    `<div class="portal-feed-card-no-image">✂️</div>`
-                }
+                ${post.imagem ? `<img src="${post.imagem}" class="portal-feed-card-image">` : `<div class="portal-feed-card-no-image">✂️</div>`}
                 <div class="portal-feed-card-info">
                     <div class="portal-feed-card-loja">
                         <div class="portal-feed-card-logo-placeholder">🏪</div>
@@ -45,129 +184,76 @@ async function carregarFeedPortal() {
                 </div>
             </div>
         `).join('');
-        
-    } catch (error) {
-        console.error('Erro ao carregar feed:', error);
-        container.innerHTML = '<p class="empty-state">❌ Erro ao carregar posts</p>';
-    }
+    } catch (e) { container.innerHTML = '<p class="empty-state">❌ Erro ao carregar</p>'; }
 }
 
-// Ver detalhes do post
 function verDetalhesPost(postId) {
-    // Buscar post completo
     db.collection('posts').doc(postId).get().then(doc => {
-        if (!doc.exists) {
-            mostrarToast('❌ Post não encontrado!', 'error');
-            return;
-        }
-        
+        if (!doc.exists) return;
         const post = doc.data();
         
-        // Criar modal
         const modal = document.createElement('div');
         modal.className = 'modal-modern portal-post-modal active';
         modal.innerHTML = `
             <div class="modal-content-modern">
-                <div class="modal-header-modern">
-                    <h3>${post.titulo}</h3>
-                    <button onclick="this.closest('.modal-modern').remove()">✕</button>
-                </div>
+                <div class="modal-header-modern"><h3>${post.titulo}</h3><button onclick="this.closest('.modal-modern').remove()">✕</button></div>
                 <div class="modal-body-modern">
-                    ${post.imagem ? `<img src="${post.imagem}" class="portal-post-modal-image" alt="${post.titulo}">` : ''}
+                    ${post.imagem ? `<img src="${post.imagem}" class="portal-post-modal-image">` : ''}
                     <div class="portal-post-modal-loja">
-                        <div class="portal-post-modal-logo" style="background:var(--gold-gradient);display:flex;align-items:center;justify-content:center;font-size:20px;">🏪</div>
-                        <div>
-                            <strong>${post.barbeiroNome || 'Loja'}</strong>
-                            <p style="font-size:12px;color:var(--text-muted);">${new Date(post.dataCriacao).toLocaleDateString('pt-BR')}</p>
-                        </div>
+                        <div class="portal-post-modal-logo" style="background:var(--gold-gradient);display:flex;align-items:center;justify-content:center;">🏪</div>
+                        <div><strong>${post.barbeiroNome || 'Loja'}</strong><p style="font-size:12px;color:var(--text-muted);">${new Date(post.dataCriacao).toLocaleDateString('pt-BR')}</p></div>
                     </div>
-                    <p>${post.descricao || 'Sem descrição'}</p>
+                    <p>${post.descricao || ''}</p>
                     <div class="portal-post-modal-preco">R$ ${(post.preco || 0).toFixed(2)}</div>
-                    
                     <div style="background:rgba(212,168,75,0.1);padding:12px;border-radius:8px;margin:12px 0;text-align:center;">
-                        <p style="font-size:13px;color:var(--text-secondary);">
-                            👤 <strong>Faça login</strong> para agendar este serviço
-                        </p>
+                        <p>👤 <strong>Faça login</strong> para agendar</p>
                     </div>
-                    
-                    <button class="portal-btn portal-btn-primary" onclick="this.closest('.modal-modern').remove(); mostrarLoginPortal();">
-                        <i class="fas fa-sign-in-alt"></i> FAZER LOGIN PARA AGENDAR
+                    <button class="portal-btn portal-btn-primary" onclick="this.closest('.modal-modern').remove(); document.getElementById('loginFormsContainer').style.display='block';">
+                        <i class="fas fa-sign-in-alt"></i> FAZER LOGIN
                     </button>
                 </div>
-            </div>
-        `;
-        
+            </div>`;
         document.body.appendChild(modal);
-        
-        // Fechar ao clicar fora
-        modal.addEventListener('click', function(e) {
-            if (e.target === modal) modal.remove();
-        });
-        
-    }).catch(error => {
-        console.error('Erro:', error);
-        mostrarToast('❌ Erro ao carregar detalhes!', 'error');
+        modal.addEventListener('click', function(e) { if (e.target === modal) modal.remove(); });
     });
 }
 
-// Mostrar login do portal
-function mostrarLoginPortal() {
-    const container = document.getElementById('loginFormsContainer');
-    if (container) {
-        container.style.display = 'block';
-        document.getElementById('loginFormCliente').style.display = 'block';
-        document.getElementById('loginFormBarbeiro').style.display = 'none';
-        document.querySelectorAll('.login-tab').forEach((t, i) => t.classList.toggle('active', i === 0));
-        setTimeout(() => container.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
-    }
-}
-
-// Atualizar imagem de perfil do portal
+// ==========================================================
+// ===== ATUALIZAR IMAGENS =====
+// ==========================================================
 function atualizarImagemPortal() {
     const lojaSalva = localStorage.getItem('barbeariaRM_loja');
-    
-    // Logo do header
     const headerLogo = document.getElementById('headerLogoImg');
-    if (headerLogo) {
-        if (lojaSalva) {
-            try {
-                const loja = JSON.parse(lojaSalva);
-                headerLogo.src = loja.logo || 'https://via.placeholder.com/100x100/1a1a1a/D4A84B?text=LPX';
-            } catch (e) {
-                headerLogo.src = 'https://via.placeholder.com/100x100/1a1a1a/D4A84B?text=LPX';
-            }
-        } else {
-            headerLogo.src = 'https://via.placeholder.com/100x100/1a1a1a/D4A84B?text=LPX';
-        }
-    }
-    
-    // Logo do portal (avatar grande)
     const portalLogo = document.getElementById('portalLogo');
-    if (portalLogo) {
-        if (lojaSalva) {
-            try {
-                const loja = JSON.parse(lojaSalva);
-                portalLogo.src = loja.logo || 'https://via.placeholder.com/100x100/1a1a1a/D4A84B?text=LPX';
-            } catch (e) {
-                portalLogo.src = 'https://via.placeholder.com/100x100/1a1a1a/D4A84B?text=LPX';
-            }
-        } else {
-            portalLogo.src = 'https://via.placeholder.com/100x100/1a1a1a/D4A84B?text=LPX';
-        }
-    }
-}
-
-// Atualizar nome e slogan do portal
-function atualizarInfoPortal() {
-    const lojaSalva = localStorage.getItem('barbeariaRM_loja');
     
     if (lojaSalva) {
         try {
             const loja = JSON.parse(lojaSalva);
-            const nomeEl = document.getElementById('portalNomeLoja');
-            const sloganEl = document.getElementById('portalSloganLoja');
-            if (nomeEl) nomeEl.textContent = loja.nome || 'LPX Tecnologia';
-            if (sloganEl) sloganEl.textContent = loja.slogan || 'Inovação que transforma';
+            if (headerLogo) headerLogo.src = loja.logo || PORTAL_CONFIG.logo;
+            if (portalLogo) portalLogo.src = loja.logo || PORTAL_CONFIG.logo;
         } catch (e) {}
     }
 }
+
+// ==========================================================
+// ===== NAVEGAÇÃO =====
+// ==========================================================
+function mostrarTela(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const el = document.getElementById(id);
+    if (el) el.classList.add('active');
+    window.scrollTo(0, 0);
+}
+
+// ==========================================================
+// ===== INICIALIZAÇÃO =====
+// ==========================================================
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 LPX Tecnologia iniciando...');
+    inicializarTema();
+    mostrarHeaderPortal();
+    atualizarImagemPortal();
+    carregarLojasPortal();
+    carregarFeedPortal();
+    console.log('✅ Pronto!');
+});
