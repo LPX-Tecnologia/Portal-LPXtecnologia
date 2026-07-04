@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0a0a0a">
+    <title>Barbearia RM</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/loja-style.css">
+    
+    <!-- Fontes -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+    <!-- HEADER DA LOJA -->
+    <header class="loja-header">
+        <div class="loja-header-container">
+            <div class="loja-header-logo">
+                <img src="https://via.placeholder.com/44x44/1a1a1a/D4A84B?text=RM" alt="Barbearia RM" id="lojaLogo">
+            </div>
+            <div class="loja-header-info">
+                <h1>Barbearia RM</h1>
+                <p>Atitude, Estilo e Confiança</p>
+            </div>
+            <div class="loja-header-actions">
+                <button class="loja-header-btn" onclick="toggleTema()" title="Tema">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="loja-header-btn" onclick="sairLoja()" title="Sair">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="loja-main">
+        
+        <!-- PERFIL DA LOJA -->
+        <section class="loja-perfil" id="lojaPerfil">
+            <div class="loja-perfil-card">
+                <div class="loja-perfil-avatar">
+                    <img src="https://via.placeholder.com/100x100/1a1a1a/D4A84B?text=RM" alt="Barbearia RM" id="lojaPerfilLogo">
+                </div>
+                <h2>Barbearia RM</h2>
+                <p class="loja-perfil-slogan">Atitude, Estilo e Confiança</p>
+                <div class="loja-perfil-stats">
+                    <span>⭐ 4.8</span>
+                    <span>✂️ 1.2k cortes</span>
+                    <span>📍 2.5km</span>
+                </div>
+                <div class="loja-perfil-contato">
+                    <p><i class="fab fa-whatsapp"></i> (11) 99999-9999</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Rua Augusta, 1234 - São Paulo</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEED DE POSTS -->
+        <section class="loja-feed">
+            <h3>📸 Nossos Trabalhos</h3>
+            <div class="loja-feed-grid" id="lojaFeedContainer">
+                <p class="empty-state">Nenhum post ainda</p>
+            </div>
+        </section>
+
+        <!-- PLANOS -->
+        <section class="loja-planos">
+            <h3>👑 Nossos Planos</h3>
+            <div id="lojaPlanosContainer">
+                <p class="empty-state">Nenhum plano disponível</p>
+            </div>
+        </section>
+
+        <!-- AGENDAMENTO -->
+        <section class="loja-agendar">
+            <h3>📅 Agende seu Horário</h3>
+            <div class="input-group">
+                <i class="fas fa-calendar"></i>
+                <input type="date" id="agendamentoData">
+            </div>
+            <div class="input-group">
+                <i class="fas fa-clock"></i>
+                <input type="time" id="agendamentoHorario" value="10:00">
+            </div>
+            <div class="input-group">
+                <i class="fas fa-cut"></i>
+                <select id="agendamentoTipo">
+                    <option value="Corte">Corte</option>
+                    <option value="Barba">Barba</option>
+                    <option value="Corte + Barba">Corte + Barba</option>
+                    <option value="Hidratação">Hidratação</option>
+                </select>
+            </div>
+            <button class="btn btn-primary btn-block" onclick="agendar()">
+                <i class="fas fa-check"></i> AGENDAR
+            </button>
+        </section>
+
+    </main>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast" style="display:none;"></div>
+
+    <!-- Scripts -->
+    <script src="js/loja-firebase.js"></script>
+    <script src="js/loja-tema.js"></script>
+    <script src="js/loja-auth.js"></script>
+    <script src="js/loja-posts.js"></script>
+    <script src="js/loja-planos.js"></script>
+    <script src="js/loja-agendamentos.js"></script>
+    <script src="js/loja-faturamento.js"></script>
+    <script src="js/loja-live.js"></script>
+    <script src="js/loja-perfil.js"></script>
+    <script src="js/loja-main.js"></script>
+</body>
+</html>
