@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0a0a0a">
+    <title>Loja - LPX Tecnologia</title>
+    
+    <!-- CSS Compartilhado -->
+    <link rel="stylesheet" href="../../shared/css/shared-components.css">
+    <!-- CSS da Loja -->
+    <link rel="stylesheet" href="css/loja-style.css">
+    
+    <!-- Fontes -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- ============================================================ -->
+    <!-- HEADER DA LOJA -->
+    <!-- ============================================================ -->
+    <header class="loja-header">
+        <div class="loja-header-container">
+            <div class="loja-logo-area">
+                <div class="loja-logo-circle">
+                    <img src="../../assets/images/default-logo.png" alt="Logo Loja" id="lojaHeaderLogo">
+                </div>
+                <div class="loja-header-info">
+                    <h1 id="lojaHeaderNome">Nome da Loja</h1>
+                    <p id="lojaHeaderSlogan">Slogan da Loja</p>
+                </div>
+            </div>
+            <div class="loja-header-actions">
+                <button class="loja-theme-btn" onclick="toggleTema()" title="Alternar tema">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="loja-logout-btn" onclick="confirmarSaida()" title="Sair">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================================ -->
+    <!-- TELAS -->
+    <!-- ============================================================ -->
+    <main class="loja-main">
+        
+        <!-- TELA: HOME BARBEIRO -->
+        <section class="tela active" id="telaHome">
+            <div class="welcome-card" id="welcomeCard">
+                <div class="welcome-avatar">
+                    <img src="../../assets/images/default-logo.png" alt="Foto" id="userAvatar">
+                </div>
+                <div class="welcome-text">
+                    <h2>✂️ Olá, <span id="welcomeNome">Profissional</span>!</h2>
+                    <p>Gerencie sua loja</p>
+                </div>
+            </div>
+
+            <!-- Cards de Faturamento -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-calendar-day"></i>
+                    <span>Hoje</span>
+                    <strong id="faturamentoHoje">R$ 0,00</strong>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-calendar-week"></i>
+                    <span>Semana</span>
+                    <strong id="faturamentoSemana">R$ 0,00</strong>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Mês</span>
+                    <strong id="faturamentoMes">R$ 0,00</strong>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Ano</span>
+                    <strong id="faturamentoAno">R$ 0,00</strong>
+                </div>
+            </div>
+
+            <!-- Planos -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-crown"></i> Planos</h3>
+                    <button class="btn btn-sm btn-primary" onclick="mostrarTela('telaCriarPlano')">+ Novo</button>
+                </div>
+                <div id="planosContainer">
+                    <p class="empty-state">Nenhum plano cadastrado</p>
+                </div>
+            </div>
+
+            <!-- Agendamentos -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-list-check"></i> Agendamentos</h3>
+                </div>
+                <div id="agendamentosContainer">
+                    <p class="empty-state">Nenhum agendamento</p>
+                </div>
+            </div>
+
+            <!-- Posts -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-image"></i> Meus Posts</h3>
+                    <button class="btn btn-sm btn-primary" onclick="mostrarTela('telaCriarPost')">+ Novo</button>
+                </div>
+                <div id="postsContainer">
+                    <p class="empty-state">Nenhum post publicado</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TELA: CRIAR POST -->
+        <section class="tela" id="telaCriarPost">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-camera"></i> Novo Post</h3>
+                    <button class="btn btn-sm btn-outline" onclick="mostrarTela('telaHome')">← Voltar</button>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-heading"></i>
+                    <input type="text" id="postTitulo" placeholder="Título do post">
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-dollar-sign"></i>
+                    <input type="number" id="postPreco" placeholder="Preço R$" step="0.01">
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-align-left"></i>
+                    <textarea id="postDescricao" placeholder="Descrição" rows="3"></textarea>
+                </div>
+                <div class="upload-area" onclick="document.getElementById('postImagemInput').click()">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Clique para adicionar imagem</p>
+                    <input type="file" id="postImagemInput" accept="image/*" style="display:none" onchange="previewImagemPost(event)">
+                </div>
+                <img id="postImagemPreview" style="display:none;width:100%;max-height:200px;object-fit:cover;border-radius:8px;margin:10px 0;">
+                <input type="hidden" id="postImagem" value="">
+                <button class="btn btn-primary btn-block" onclick="criarPost()">
+                    <i class="fas fa-paper-plane"></i> PUBLICAR
+                </button>
+            </div>
+        </section>
+
+        <!-- TELA: CRIAR PLANO -->
+        <section class="tela" id="telaCriarPlano">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-crown"></i> Novo Plano</h3>
+                    <button class="btn btn-sm btn-outline" onclick="mostrarTela('telaHome')">← Voltar</button>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-tag"></i>
+                    <input type="text" id="planoNome" placeholder="Nome do plano">
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-clock"></i>
+                    <select id="planoPeriodo">
+                        <option value="mensal">Mensal</option>
+                        <option value="trimestral">Trimestral</option>
+                        <option value="semestral">Semestral</option>
+                        <option value="anual">Anual</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-dollar-sign"></i>
+                    <input type="number" id="planoPreco" placeholder="Preço R$" step="0.01">
+                </div>
+                <button class="btn btn-primary btn-block" onclick="criarPlano()">
+                    <i class="fas fa-check"></i> CRIAR PLANO
+                </button>
+            </div>
+        </section>
+
+        <!-- TELA: EXTRATO -->
+        <section class="tela" id="telaExtrato">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-chart-bar"></i> Extrato Detalhado</h3>
+                    <button class="btn btn-sm btn-outline" onclick="mostrarTela('telaHome')">← Voltar</button>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <i class="fas fa-calendar-day"></i>
+                        <span>Hoje</span>
+                        <strong id="extratoHoje">R$ 0,00</strong>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-calendar-week"></i>
+                        <span>Semana</span>
+                        <strong id="extratoSemana">R$ 0,00</strong>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Mês</span>
+                        <strong id="extratoMes">R$ 0,00</strong>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Ano</span>
+                        <strong id="extratoAno">R$ 0,00</strong>
+                    </div>
+                </div>
+                <div id="extratoLista"></div>
+            </div>
+        </section>
+
+        <!-- TELA: LIVE -->
+        <section class="tela" id="telaLive">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-broadcast-tower"></i> Live</h3>
+                    <button class="btn btn-sm btn-outline" onclick="mostrarTela('telaHome')">← Voltar</button>
+                </div>
+                
+                <div id="livePlayer" style="display:none;">
+                    <div class="live-status-bar">
+                        <span>🔴 AO VIVO</span>
+                        <span id="liveViewerCount">👥 0</span>
+                    </div>
+                </div>
+                
+                <div id="livePlaceholder" class="empty-state">
+                    <i class="fas fa-broadcast-tower" style="font-size:40px;color:var(--danger);"></i>
+                    <p>Nenhuma transmissão ativa</p>
+                </div>
+                
+                <div id="liveControls">
+                    <div class="input-group">
+                        <i class="fas fa-heading"></i>
+                        <input type="text" id="liveTitulo" placeholder="Título da live" value="🔴 Live">
+                    </div>
+                    <button class="btn btn-primary btn-block" onclick="iniciarLive()">
+                        <i class="fas fa-play-circle"></i> INICIAR LIVE
+                    </button>
+                    <button class="btn btn-danger btn-block" onclick="encerrarLive()" style="margin-top:8px;">
+                        <i class="fas fa-stop-circle"></i> ENCERRAR LIVE
+                    </button>
+                </div>
+                
+                <!-- Chat -->
+                <div class="live-chat" style="margin-top:12px;">
+                    <h4>💬 Chat ao Vivo</h4>
+                    <div id="liveChatContainer" style="max-height:200px;overflow-y:auto;padding:8px;background:var(--bg);border-radius:8px;margin:8px 0;">
+                        <p style="color:var(--text-muted);text-align:center;">Chat vazio</p>
+                    </div>
+                    <div style="display:flex;gap:8px;">
+                        <input type="text" id="liveChatInput" placeholder="Mensagem..." style="flex:1;padding:10px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);">
+                        <button class="btn btn-sm btn-primary" onclick="enviarMensagemLive()">📤</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TELA: PERFIL -->
+        <section class="tela" id="telaPerfil">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-user"></i> Meu Perfil</h3>
+                    <button class="btn btn-sm btn-outline" onclick="mostrarTela('telaHome')">← Voltar</button>
+                </div>
+                <div style="text-align:center;margin-bottom:16px;">
+                    <img src="../../assets/images/default-logo.png" alt="Foto" style="width:80px;height:80px;border-radius:50%;border:3px solid var(--primary);">
+                    <h3 id="perfilNome" style="margin-top:8px;"></h3>
+                    <p id="perfilEmail" style="color:var(--text-secondary);"></p>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="editNome" placeholder="Nome">
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-phone"></i>
+                    <input type="tel" id="editCelular" placeholder="Celular">
+                </div>
+                <button class="btn btn-primary btn-block" onclick="salvarPerfil()">
+                    <i class="fas fa-save"></i> SALVAR
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ============================================================ -->
+    <!-- BOTTOM NAVIGATION -->
+    <!-- ============================================================ -->
+    <nav class="bottom-nav" id="bottomNav">
+        <button class="nav-item active" onclick="mostrarTela('telaHome')">
+            <i class="fas fa-home"></i>
+            <span>Início</span>
+        </button>
+        <button class="nav-item" onclick="mostrarTela('telaCriarPost')">
+            <i class="fas fa-camera"></i>
+            <span>Postar</span>
+        </button>
+        <button class="nav-item" onclick="mostrarTela('telaExtrato')">
+            <i class="fas fa-chart-bar"></i>
+            <span>Extrato</span>
+        </button>
+        <button class="nav-item" onclick="mostrarTela('telaLive')">
+            <i class="fas fa-broadcast-tower"></i>
+            <span>Live</span>
+        </button>
+        <button class="nav-item" onclick="mostrarTela('telaPerfil')">
+            <i class="fas fa-user"></i>
+            <span>Perfil</span>
+        </button>
+    </nav>
+
+    <!-- ============================================================ -->
+    <!-- MODAIS -->
+    <!-- ============================================================ -->
+    <!-- Modal de Confirmação -->
+    <div class="modal-modern" id="modalConfirmacao">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalConfirmacaoTitulo">Confirmar</h3>
+                <button onclick="fecharModal('modalConfirmacao')">✕</button>
+            </div>
+            <div class="modal-body">
+                <p id="modalConfirmacaoMensagem">Tem certeza?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline btn-block" onclick="fecharModal('modalConfirmacao')">Cancelar</button>
+                <button class="btn btn-primary btn-block" id="modalConfirmacaoBtnSim">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Valor -->
+    <div class="modal-modern" id="modalValor">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalValorTitulo">💰 Valor</h3>
+                <button onclick="fecharModal('modalValor')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <i class="fas fa-dollar-sign"></i>
+                    <input type="number" id="modalValorInput" placeholder="0.00" step="0.01">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline btn-block" onclick="fecharModal('modalValor')">Cancelar</button>
+                <button class="btn btn-primary btn-block" id="modalValorBtnConfirmar">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast" style="display:none;"></div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
+    <!-- Scripts Compartilhados -->
+    <script src="../../shared/js/firebase-config.js"></script>
+    <script src="../../shared/js/utils.js"></script>
+    
+    <!-- Scripts da Loja -->
+    <script src="js/loja-tema.js"></script>
+    <script src="js/loja-auth.js"></script>
+    <script src="js/loja-agendamentos.js"></script>
+    <script src="js/loja-posts.js"></script>
+    <script src="js/loja-planos.js"></script>
+    <script src="js/loja-live.js"></script>
+    <script src="js/loja-faturamento.js"></script>
+    <script src="js/loja-perfil.js"></script>
+    <script src="js/loja-main.js"></script>
+</body>
+</html>
