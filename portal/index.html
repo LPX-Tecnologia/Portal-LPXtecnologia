@@ -7,7 +7,7 @@
     <title>LPX Tecnologia - Portal Multi-Lojas</title>
     
     <!-- CSS -->
-   <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="style.css">
     
     <!-- Fontes -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -15,7 +15,6 @@
     
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 </head>
 <body>
@@ -25,7 +24,7 @@
         <div class="header-container">
             <div class="header-logo-area">
                 <div class="logo-circle" id="headerLogoCircle">
-                    <img src="../assets/images/logo-lpx-tecnologia.jpg" alt="LPX Tecnologia" class="logo-img" id="headerLogoImg">
+                    <img src="https://via.placeholder.com/100x100/1a1a1a/D4A84B?text=LPX" alt="LPX Tecnologia" class="logo-img" id="headerLogoImg" onerror="this.src='https://via.placeholder.com/100x100/1a1a1a/D4A84B?text=LPX'">
                 </div>
                 <div class="header-info">
                     <h1 class="header-title" id="headerTitle">LPX Tecnologia</h1>
@@ -50,7 +49,7 @@
             <div class="portal-card">
                 <div class="portal-profile">
                     <div class="portal-avatar-container">
-                        <img src="../assets/images/logo-lpx-tecnologia.jpg" alt="Loja" class="portal-avatar" id="portalLogo">
+                        <img src="https://via.placeholder.com/100x100/1a1a1a/D4A84B?text=LPX" alt="Loja" class="portal-avatar" id="portalLogo">
                         <div class="portal-avatar-ring"></div>
                     </div>
                     <div class="portal-divider-gold"></div>
@@ -68,7 +67,23 @@
                         <span class="portal-carousel-title">🏪 Lojas Disponíveis</span>
                         <span class="portal-carousel-hint">← Deslize →</span>
                     </div>
-                    <div class="portal-carousel-track" id="portalCarrossel"></div>
+                    <div class="portal-carousel-track" id="portalCarrossel">
+                        <div class="portal-loja-card ativa" onclick="selecionarLojaPortal(0)">
+                            <div class="portal-loja-card-icone">💈</div>
+                            <div class="portal-loja-card-nome">Barbearia RM</div>
+                            <div class="portal-loja-card-categoria">💈 barbearia</div>
+                        </div>
+                        <div class="portal-loja-card" onclick="selecionarLojaPortal(1)">
+                            <div class="portal-loja-card-icone">💇</div>
+                            <div class="portal-loja-card-nome">Salão Beleza Pura</div>
+                            <div class="portal-loja-card-categoria">💇 salao</div>
+                        </div>
+                        <div class="portal-loja-card" onclick="selecionarLojaPortal(2)">
+                            <div class="portal-loja-card-icone">✨</div>
+                            <div class="portal-loja-card-nome">Estética Vip</div>
+                            <div class="portal-loja-card-categoria">✨ estetica</div>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="portal-actions">
@@ -122,11 +137,331 @@
         </div>
     </section>
 
-    <!-- DEMAIS TELAS AQUI... -->
-    <!-- (Use o mesmo HTML que você já tem para as outras telas) -->
+    <!-- TELA: CADASTRO DE LOJA -->
+    <section class="screen" id="cadastroLojaScreen">
+        <div class="screen-container">
+            <div class="card-modern">
+                <div class="card-header-modern">
+                    <h3>🏪 Cadastrar Minha Loja</h3>
+                    <button class="portal-btn portal-btn-text" onclick="mostrarTela('loginScreen')">← Voltar</button>
+                </div>
+                <div class="input-group-modern">
+                    <i class="fas fa-store input-icon"></i>
+                    <input type="text" id="cadNomeLoja" placeholder="Nome da Loja">
+                </div>
+                <div class="input-group-modern">
+                    <i class="fas fa-quote-right input-icon"></i>
+                    <input type="text" id="cadSloganLoja" placeholder="Slogan da Loja">
+                </div>
+                <div class="input-group-modern">
+                    <i class="fas fa-tag input-icon"></i>
+                    <select id="cadCategoriaLoja">
+                        <option value="">Selecione a Categoria</option>
+                        <option value="barbearia">💈 Barbearia</option>
+                        <option value="salao">💇 Salão de Beleza</option>
+                        <option value="estetica">✨ Estética</option>
+                        <option value="tatuagem">🎨 Tatuagem</option>
+                        <option value="petshop">🐾 Pet Shop</option>
+                        <option value="outro">📦 Outro</option>
+                    </select>
+                </div>
+                <div class="input-group-modern">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="cadDonoLoja" placeholder="Nome do Dono">
+                </div>
+                <div class="input-group-modern">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="cadEmailLoja" placeholder="Email da Loja">
+                </div>
+                <div class="input-group-modern">
+                    <i class="fab fa-whatsapp input-icon"></i>
+                    <input type="tel" id="cadWhatsappLoja" placeholder="WhatsApp">
+                </div>
+                <div class="input-group-modern">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="cadSenhaLoja" placeholder="Senha de Administrador">
+                </div>
+                <button class="portal-btn portal-btn-primary" onclick="cadastrarLoja()">
+                    <i class="fas fa-check-circle"></i> CADASTRAR LOJA
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- TELA: CADASTRO CLIENTE -->
+    <section class="screen" id="cadastroClienteScreen">
+        <div class="screen-container">
+            <div class="card-modern">
+                <div class="card-header-modern">
+                    <h3>📝 Cadastro Cliente</h3>
+                    <button class="portal-btn portal-btn-text" onclick="mostrarTela('loginScreen')">← Voltar</button>
+                </div>
+                <div class="input-group-modern">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="cadNomeCliente" placeholder="Nome completo">
+                </div>
+                <div class="input-group-modern">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="cadEmailCliente" placeholder="seu@email.com">
+                </div>
+                <div class="input-group-modern">
+                    <i class="fas fa-phone input-icon"></i>
+                    <input type="tel" id="cadCelularCliente" placeholder="(11) 99999-9999">
+                </div>
+                <div class="input-group-modern">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="cadSenhaCliente" placeholder="Senha (mínimo 6)">
+                </div>
+                <button class="portal-btn portal-btn-primary" onclick="cadastrarCliente()">
+                    <i class="fas fa-check"></i> FINALIZAR
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- TELA: CADASTRO BARBEIRO -->
+    <section class="screen" id="cadastroBarbeiroScreen">
+        <div class="screen-container">
+            <div class="card-modern">
+                <div class="card-header-modern">
+                    <h3>✂️ Cadastro Profissional</h3>
+                    <button class="portal-btn portal-btn-text" onclick="mostrarTela('loginScreen')">← Voltar</button>
+                </div>
+                <div class="input-group-modern">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="cadNomeBarbeiro" placeholder="Nome completo">
+                </div>
+                <div class="input-group-modern">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="cadEmailBarbeiro" placeholder="profissional@email.com">
+                </div>
+                <div class="input-group-modern">
+                    <i class="fas fa-phone input-icon"></i>
+                    <input type="tel" id="cadCelularBarbeiro" placeholder="(11) 99999-9999">
+                </div>
+                <div class="input-group-modern">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="cadSenhaBarbeiro" placeholder="Senha (mínimo 6)">
+                </div>
+                <button class="portal-btn portal-btn-primary" onclick="cadastrarBarbeiro()">
+                    <i class="fas fa-check"></i> FINALIZAR
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- TELA: HOME CLIENTE -->
+    <section class="screen" id="homeClienteScreen">
+        <div class="screen-container">
+            <div class="welcome-card">
+                <div class="welcome-avatar">
+                    <img src="https://via.placeholder.com/50x50/1a1a1a/D4A84B?text=C" alt="Foto">
+                </div>
+                <div class="welcome-text">
+                    <h2>👋 Olá, <span id="welcomeClienteNome">Cliente</span>!</h2>
+                    <p>Confira os serviços e agende seu horário</p>
+                    <button class="portal-btn portal-btn-text" onclick="sairCliente()" style="margin-top:8px;padding:4px 8px;font-size:11px;">🚪 Sair</button>
+                </div>
+            </div>
+            <div class="card-modern">
+                <div class="card-header-modern">
+                    <h3><i class="fas fa-image"></i> Feed</h3>
+                </div>
+                <div id="feedClienteContainer">
+                    <p class="empty-state">📸 Nenhum post ainda</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TELA: HOME BARBEIRO -->
+    <section class="screen" id="homeBarbeiroScreen">
+        <div class="screen-container">
+            <div class="welcome-card barbeiro">
+                <div class="welcome-avatar">
+                    <img src="https://via.placeholder.com/50x50/1a1a1a/10B981?text=B" alt="Foto">
+                </div>
+                <div class="welcome-text">
+                    <h2>✂️ Olá, <span id="welcomeBarbeiroNome">Barbeiro</span>!</h2>
+                    <p>Gerencie sua barbearia</p>
+                    <button class="portal-btn portal-btn-text" onclick="sairBarbeiro()" style="margin-top:8px;padding:4px 8px;font-size:11px;">🚪 Sair</button>
+                </div>
+            </div>
+
+            <div class="stats-grid-modern">
+                <div class="stat-card-modern">
+                    <i class="fas fa-calendar-day stat-icon"></i>
+                    <span class="stat-label">Hoje</span>
+                    <strong class="stat-value" id="faturamentoHoje">R$ 0,00</strong>
+                </div>
+                <div class="stat-card-modern">
+                    <i class="fas fa-calendar-week stat-icon"></i>
+                    <span class="stat-label">Semana</span>
+                    <strong class="stat-value" id="faturamentoSemana">R$ 0,00</strong>
+                </div>
+                <div class="stat-card-modern">
+                    <i class="fas fa-calendar-alt stat-icon"></i>
+                    <span class="stat-label">Mês</span>
+                    <strong class="stat-value" id="faturamentoMes">R$ 0,00</strong>
+                </div>
+                <div class="stat-card-modern">
+                    <i class="fas fa-chart-bar stat-icon"></i>
+                    <span class="stat-label">Ano</span>
+                    <strong class="stat-value" id="faturamentoAno">R$ 0,00</strong>
+                </div>
+            </div>
+
+            <div class="card-modern">
+                <div class="card-header-modern">
+                    <h3><i class="fas fa-list-check"></i> Agendamentos</h3>
+                </div>
+                <div id="agendamentosBarbeiroContainer">
+                    <p class="empty-state">📅 Nenhum agendamento</p>
+                </div>
+            </div>
+
+            <div class="card-modern">
+                <div class="card-header-modern">
+                    <h3><i class="fas fa-image"></i> Meus Posts</h3>
+                </div>
+                <div id="meusPostsContainer">
+                    <p class="empty-state">📸 Nenhum post</p>
+                </div>
+            </div>
+
+            <div class="action-buttons-grid">
+                <button class="action-btn" onclick="mostrarTela('criarPostScreen')">
+                    <i class="fas fa-camera"></i> Postar
+                </button>
+                <button class="action-btn" onclick="mostrarTela('extratoScreen')">
+                    <i class="fas fa-chart-line"></i> Extrato
+                </button>
+                <button class="action-btn" onclick="mostrarTela('liveScreen')">
+                    <i class="fas fa-broadcast-tower"></i> Live
+                </button>
+                <button class="action-btn" onclick="mostrarTela('perfilBarbeiroScreen')">
+                    <i class="fas fa-user"></i> Perfil
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- TELA: CRIAR POST -->
+    <section class="screen" id="criarPostScreen">
+        <div class="screen-container">
+            <div class="card-modern">
+                <div class="card-header-modern">
+                    <h3><i class="fas fa-camera"></i> Novo Post</h3>
+                    <button class="portal-btn portal-btn-text" onclick="mostrarTela('homeBarbeiroScreen')">← Voltar</button>
+                </div>
+                <div class="input-group-modern">
+                    <i class="fas fa-heading input-icon"></i>
+                    <input type="text" id="postTitulo" placeholder="Título do post">
+                </div>
+                <div class="input-group-modern">
+                    <i class="fas fa-dollar-sign input-icon"></i>
+                    <input type="number" id="postPreco" placeholder="Preço R$" step="0.01">
+                </div>
+                <div class="input-group-modern">
+                    <i class="fas fa-align-left input-icon"></i>
+                    <textarea id="postDescricao" placeholder="Descrição" rows="3"></textarea>
+                </div>
+                <button class="portal-btn portal-btn-primary" onclick="criarPost()">
+                    <i class="fas fa-paper-plane"></i> PUBLICAR
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- TELA: EXTRATO -->
+    <section class="screen" id="extratoScreen">
+        <div class="screen-container">
+            <div class="card-modern">
+                <div class="card-header-modern">
+                    <h3><i class="fas fa-chart-bar"></i> Extrato</h3>
+                    <button class="portal-btn portal-btn-text" onclick="mostrarTela('homeBarbeiroScreen')">← Voltar</button>
+                </div>
+                <div class="stats-grid-modern">
+                    <div class="stat-card-modern">
+                        <i class="fas fa-calendar-day stat-icon"></i>
+                        <span class="stat-label">Hoje</span>
+                        <strong class="stat-value" id="extratoHoje">R$ 0,00</strong>
+                    </div>
+                    <div class="stat-card-modern">
+                        <i class="fas fa-calendar-week stat-icon"></i>
+                        <span class="stat-label">Semana</span>
+                        <strong class="stat-value" id="extratoSemana">R$ 0,00</strong>
+                    </div>
+                    <div class="stat-card-modern">
+                        <i class="fas fa-calendar-alt stat-icon"></i>
+                        <span class="stat-label">Mês</span>
+                        <strong class="stat-value" id="extratoMes">R$ 0,00</strong>
+                    </div>
+                    <div class="stat-card-modern">
+                        <i class="fas fa-chart-bar stat-icon"></i>
+                        <span class="stat-label">Ano</span>
+                        <strong class="stat-value" id="extratoAno">R$ 0,00</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TELA: LIVE -->
+    <section class="screen" id="liveScreen">
+        <div class="screen-container">
+            <div class="card-modern">
+                <div class="card-header-modern">
+                    <h3><i class="fas fa-broadcast-tower"></i> Live</h3>
+                    <button class="portal-btn portal-btn-text" onclick="mostrarTela('homeBarbeiroScreen')">← Voltar</button>
+                </div>
+                <div id="livePlaceholder" class="empty-state">
+                    <i class="fas fa-broadcast-tower" style="font-size:40px;color:#EF4444;"></i>
+                    <p>Nenhuma transmissão ativa</p>
+                </div>
+                <div id="liveControls">
+                    <div class="input-group-modern">
+                        <i class="fas fa-heading input-icon"></i>
+                        <input type="text" id="liveTitulo" placeholder="Título da live" value="🔴 Live">
+                    </div>
+                    <button class="portal-btn portal-btn-primary" onclick="iniciarLive()">
+                        <i class="fas fa-play-circle"></i> INICIAR LIVE
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TELA: PERFIL BARBEIRO -->
+    <section class="screen" id="perfilBarbeiroScreen">
+        <div class="screen-container">
+            <div class="card-modern">
+                <div class="card-header-modern">
+                    <h3><i class="fas fa-user"></i> Meu Perfil</h3>
+                    <button class="portal-btn portal-btn-text" onclick="mostrarTela('homeBarbeiroScreen')">← Voltar</button>
+                </div>
+                <div style="text-align:center;margin-bottom:16px;">
+                    <h3 id="perfilBarbeiroNome"></h3>
+                    <p id="perfilBarbeiroEmail" style="color:var(--text-secondary);"></p>
+                </div>
+                <div class="input-group-modern">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="editBarbeiroNome" placeholder="Nome">
+                </div>
+                <div class="input-group-modern">
+                    <i class="fas fa-phone input-icon"></i>
+                    <input type="tel" id="editBarbeiroCelular" placeholder="Celular">
+                </div>
+                <button class="portal-btn portal-btn-primary" onclick="salvarPerfilBarbeiro()">
+                    <i class="fas fa-save"></i> SALVAR
+                </button>
+            </div>
+        </div>
+    </section>
 
     <!-- TOAST / MODAL -->
     <div class="toast-modern" id="toast" style="display:none;"></div>
+    
     <div class="modal-modern" id="modalConfirmacao">
         <div class="modal-content-modern">
             <div class="modal-header-modern">
@@ -162,6 +497,6 @@
         </div>
     </div>
 
-    <script src="./script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
