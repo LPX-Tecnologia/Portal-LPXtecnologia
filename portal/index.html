@@ -16,167 +16,271 @@
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
+    <style>
+        /* Garantir que os cliques funcionem */
+        .portal-loja-card { cursor: pointer !important; z-index: 10; position: relative; }
+        .portal-btn { cursor: pointer !important; z-index: 10; position: relative; }
+    </style>
 </head>
 <body>
 
-<header class="header" id="mainHeader">
-    <div class="header-container">
-        <div class="header-logo-area">
-            <div class="logo-circle" id="headerLogoCircle">
-                <img src="./logo-lpx-tecnologia.jpg" alt="LPX Tecnologia" class="logo-img" id="headerLogoImg">
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-logo-area">
+                <div class="logo-circle">
+                    <img src="logo-lpx-tecnologia.jpg" alt="LPX" class="logo-img" id="headerLogoImg" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2244%22 height=%2244%22><rect fill=%22%231a1a1a%22 width=%2244%22 height=%2244%22/><text fill=%22%23D4A84B%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2220%22>LPX</text></svg>'">
+                </div>
+                <div class="header-info">
+                    <h1 class="header-title" id="headerTitle">LPX Tecnologia</h1>
+                    <p class="header-slogan" id="headerSlogan">Inovação que transforma</p>
+                </div>
             </div>
-            <div class="header-info">
-                <h1 class="header-title" id="headerTitle">LPX Tecnologia</h1>
-                <p class="header-slogan" id="headerSlogan">Inovação que transforma</p>
+            <div class="header-actions">
+                <button class="header-btn" id="btnTema" onclick="toggleModoEscuro()" title="Tema">
+                    <i class="fas fa-moon"></i>
+                </button>
             </div>
         </div>
-        <div class="header-actions">
-            <button class="header-btn" onclick="mostrarTela('loginScreen')" title="Loja">
-                <i class="fas fa-store"></i>
-            </button>
-            <button class="header-btn" id="btnTema" onclick="toggleModoEscuro()" title="Tema">
-                <i class="fas fa-moon"></i>
-            </button>
-        </div>
-    </div>
-    <div class="header-gradient-line"></div>
-</header>
+        <div class="header-gradient-line"></div>
+    </header>
 
-    <!-- TELA: PORTAL DE LOJAS -->
-    <section class="screen active" id="loginScreen">
-        <div class="portal-wrapper">
-            <div class="portal-card">
-                <div class="portal-profile">
-                    <div class="portal-avatar-container">
-                        <img src="https://via.placeholder.com/100x100/1a1a1a/D4A84B?text=LPX" alt="Loja" class="portal-avatar" id="portalLogo">
-                        <div class="portal-avatar-ring"></div>
-                    </div>
-                    <div class="portal-divider-gold"></div>
-                    <h2 class="portal-store-name" id="portalNomeLoja">LPX Tecnologia</h2>
-                    <p class="portal-store-slogan" id="portalSloganLoja">Inovação que transforma</p>
-                    <div class="portal-stats-row" id="portalStats">
-                        <span class="portal-stat"><i class="fas fa-star"></i> 5.0</span>
-                        <span class="portal-stat"><i class="fas fa-store"></i> 1.2k</span>
-                        <span class="portal-stat"><i class="fas fa-map-marker-alt"></i> 2.5km</span>
-                    </div>
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="portal-main">
+        <div class="portal-card">
+            
+            <!-- PERFIL DA LOJA SELECIONADA -->
+            <div class="portal-profile">
+                <div class="portal-avatar-container">
+                    <img src="logo-lpx-tecnologia.jpg" alt="Loja" class="portal-avatar" id="portalLogo" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2290%22 height=%2290%22><rect fill=%22%231a1a1a%22 width=%2290%22 height=%2290%22/><text fill=%22%23D4A84B%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2230%22>🏪</text></svg>'">
+                    <div class="portal-avatar-ring"></div>
                 </div>
-                
-                <div class="portal-carousel-section">
-                    <div class="portal-carousel-header">
-                        <span class="portal-carousel-title">🏪 Lojas Disponíveis</span>
-                        <span class="portal-carousel-hint">← Deslize →</span>
-                    </div>
-                    <div class="portal-carousel-track" id="portalCarrossel"></div>
+                <div class="portal-divider-gold"></div>
+                <h2 class="portal-store-name" id="portalNomeLoja">LPX Tecnologia</h2>
+                <p class="portal-store-slogan" id="portalSloganLoja">Inovação que transforma</p>
+                <div class="portal-stats-row" id="portalStats">
+                    <span class="portal-stat"><i class="fas fa-star"></i> 5.0</span>
+                    <span class="portal-stat"><i class="fas fa-store"></i> 0</span>
+                    <span class="portal-stat"><i class="fas fa-map-marker-alt"></i> 0km</span>
                 </div>
-                
-                <!-- FEED DE POSTS -->
-                <div class="portal-feed-section">
-                    <div class="portal-feed-header">
-                        <h3>📸 Últimos Posts das Lojas</h3>
-                        <span class="portal-feed-hint">← Deslize →</span>
-                    </div>
-                    <div class="portal-feed-grid" id="portalFeedContainer">
-                        <p class="empty-state">📸 Nenhum post encontrado</p>
-                    </div>
+            </div>
+            
+            <!-- CARROSSEL DE LOJAS -->
+            <div class="portal-carousel-section">
+                <div class="portal-carousel-header">
+                    <span class="portal-carousel-title">🏪 Lojas Disponíveis</span>
+                    <span class="portal-carousel-hint">← Clique para selecionar →</span>
                 </div>
-                
-                <div class="portal-actions">
-                    <button class="portal-btn portal-btn-primary" onclick="entrarNaLoja()">
-                        <i class="fas fa-sign-in-alt"></i> ENTRAR NESTA LOJA
+                <div class="portal-carousel-track" id="portalCarrossel">
+                    <!-- Será preenchido pelo JavaScript -->
+                </div>
+            </div>
+            
+            <!-- BOTÕES -->
+            <div class="portal-actions">
+                <button class="portal-btn portal-btn-primary" onclick="entrarNaLoja()" style="cursor:pointer;">
+                    <i class="fas fa-sign-in-alt"></i> ENTRAR NESTA LOJA
+                </button>
+                <button class="portal-btn portal-btn-outline" onclick="mostrarCadastroLoja()" style="cursor:pointer;">
+                    <i class="fas fa-plus-circle"></i> CADASTRAR MINHA LOJA
+                </button>
+            </div>
+            
+            <!-- LOGIN -->
+            <div id="loginFormsContainer" style="display:none;">
+                <div class="portal-login-tabs">
+                    <button class="login-tab active" onclick="switchLoginTab('cliente')">👤 Cliente</button>
+                    <button class="login-tab" onclick="switchLoginTab('barbeiro')">✂️ Profissional</button>
+                </div>
+                <div id="loginFormCliente" class="login-form">
+                    <div class="input-group-modern">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input type="email" id="loginEmailCliente" placeholder="seu@email.com">
+                    </div>
+                    <div class="input-group-modern">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="loginSenhaCliente" placeholder="Sua senha">
+                    </div>
+                    <button class="portal-btn portal-btn-primary" onclick="loginCliente()" style="cursor:pointer;">
+                        <i class="fas fa-key"></i> ENTRAR
                     </button>
-                    <button class="portal-btn portal-btn-outline" onclick="mostrarTela('cadastroLojaScreen')">
-                        <i class="fas fa-plus-circle"></i> CADASTRAR MINHA LOJA
+                    <button class="portal-btn portal-btn-text" onclick="alert('Em breve!')">
+                        Criar conta de cliente
                     </button>
                 </div>
-                
-                <div id="loginFormsContainer" style="display:none;">
-                    <div class="portal-login-tabs">
-                        <button class="login-tab active" onclick="switchLoginTab('cliente')">👤 Cliente</button>
-                        <button class="login-tab" onclick="switchLoginTab('barbeiro')">✂️ Profissional</button>
+                <div id="loginFormBarbeiro" class="login-form" style="display:none;">
+                    <div class="input-group-modern">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input type="email" id="loginEmailBarbeiro" placeholder="profissional@email.com">
                     </div>
-                    <div id="loginFormCliente" class="login-form">
-                        <div class="input-group-modern">
-                            <i class="fas fa-envelope input-icon"></i>
-                            <input type="email" id="loginEmailCliente" placeholder="seu@email.com">
-                        </div>
-                        <div class="input-group-modern">
-                            <i class="fas fa-lock input-icon"></i>
-                            <input type="password" id="loginSenhaCliente" placeholder="Sua senha">
-                        </div>
-                        <button class="portal-btn portal-btn-primary" onclick="loginCliente()">
-                            <i class="fas fa-key"></i> ENTRAR
-                        </button>
-                        <button class="portal-btn portal-btn-text" onclick="mostrarTela('cadastroClienteScreen')">
-                            Criar conta de cliente
-                        </button>
+                    <div class="input-group-modern">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="loginSenhaBarbeiro" placeholder="Sua senha">
                     </div>
-                    <div id="loginFormBarbeiro" class="login-form" style="display:none;">
-                        <div class="input-group-modern">
-                            <i class="fas fa-envelope input-icon"></i>
-                            <input type="email" id="loginEmailBarbeiro" placeholder="profissional@email.com">
-                        </div>
-                        <div class="input-group-modern">
-                            <i class="fas fa-lock input-icon"></i>
-                            <input type="password" id="loginSenhaBarbeiro" placeholder="Sua senha">
-                        </div>
-                        <button class="portal-btn portal-btn-secondary" onclick="loginBarbeiro()">
-                            <i class="fas fa-key"></i> ENTRAR
-                        </button>
-                        <button class="portal-btn portal-btn-text" onclick="mostrarTela('cadastroBarbeiroScreen')">
-                            Criar conta profissional
-                        </button>
-                    </div>
+                    <button class="portal-btn portal-btn-secondary" onclick="loginBarbeiro()" style="cursor:pointer;">
+                        <i class="fas fa-key"></i> ENTRAR
+                    </button>
+                    <button class="portal-btn portal-btn-text" onclick="alert('Em breve!')">
+                        Criar conta profissional
+                    </button>
                 </div>
             </div>
         </div>
-    </section>
+    </main>
 
-    <!-- TELA: CADASTRO DE LOJA -->
-    <section class="screen" id="cadastroLojaScreen">
-        <div class="screen-container">
-            <div class="card-modern">
-                <div class="card-header-modern">
-                    <h3>🏪 Cadastrar Minha Loja</h3>
-                    <button class="portal-btn portal-btn-text" onclick="mostrarTela('loginScreen')">← Voltar</button>
-                </div>
-                <div class="input-group-modern"><i class="fas fa-store input-icon"></i><input type="text" id="cadNomeLoja" placeholder="Nome da Loja"></div>
-                <div class="input-group-modern"><i class="fas fa-quote-right input-icon"></i><input type="text" id="cadSloganLoja" placeholder="Slogan"></div>
-                <div class="input-group-modern"><i class="fas fa-tag input-icon"></i><select id="cadCategoriaLoja"><option value="">Categoria</option><option value="barbearia">💈 Barbearia</option><option value="salao">💇 Salão</option><option value="estetica">✨ Estética</option><option value="outro">📦 Outro</option></select></div>
-                <div class="input-group-modern"><i class="fas fa-user input-icon"></i><input type="text" id="cadDonoLoja" placeholder="Nome do Dono"></div>
-                <div class="input-group-modern"><i class="fas fa-envelope input-icon"></i><input type="email" id="cadEmailLoja" placeholder="Email"></div>
-                <div class="input-group-modern"><i class="fab fa-whatsapp input-icon"></i><input type="tel" id="cadWhatsappLoja" placeholder="WhatsApp"></div>
-                <div class="input-group-modern"><i class="fas fa-lock input-icon"></i><input type="password" id="cadSenhaLoja" placeholder="Senha"></div>
-                <button class="portal-btn portal-btn-primary" onclick="cadastrarLoja()"><i class="fas fa-check-circle"></i> CADASTRAR LOJA</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- OUTRAS TELAS MANTIDAS IGUAIS... -->
-    <!-- (Cadastro Cliente, Cadastro Barbeiro, Home Cliente, Home Barbeiro, etc.) -->
-
-    <!-- TOAST / MODAL -->
+    <!-- TOAST -->
     <div class="toast-modern" id="toast" style="display:none;"></div>
-    <div class="modal-modern" id="modalConfirmacao">
-        <div class="modal-content-modern">
-            <div class="modal-header-modern"><h3 id="modalConfirmacaoTitulo">Confirmar</h3><button onclick="fecharModal('modalConfirmacao')">✕</button></div>
-            <div class="modal-body-modern"><p id="modalConfirmacaoMensagem">Tem certeza?</p></div>
-            <div class="modal-footer-modern" style="flex-direction:row;gap:10px;">
-                <button class="portal-btn portal-btn-outline" onclick="fecharModal('modalConfirmacao')" style="flex:1;">Não</button>
-                <button class="portal-btn portal-btn-primary" id="modalConfirmacaoBtnSim" style="flex:1;">Sim</button>
-            </div>
-        </div>
-    </div>
-    <div class="modal-modern" id="modalValor">
-        <div class="modal-content-modern">
-            <div class="modal-header-modern"><h3 id="modalValorTitulo">💰 Valor</h3><button onclick="fecharModal('modalValor')">✕</button></div>
-            <div class="modal-body-modern"><div class="input-group-modern"><i class="fas fa-dollar-sign input-icon"></i><input type="number" id="modalValorInput" placeholder="0.00" step="0.01"></div></div>
-            <div class="modal-footer-modern" style="flex-direction:row;gap:10px;">
-                <button class="portal-btn portal-btn-outline" onclick="fecharModal('modalValor')" style="flex:1;">Cancelar</button>
-                <button class="portal-btn portal-btn-primary" id="modalValorBtnConfirmar" style="flex:1;">Confirmar</button>
-            </div>
-        </div>
-    </div>
 
-    <script src="js/script.js"></script>
+    <script>
+        // ==========================================================
+        // FIREBASE
+        // ==========================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyAqN0DZ3fyV-Ns2kXNdwBMAXQgWLy1_jE0",
+            authDomain: "barbearia-rm.firebaseapp.com",
+            projectId: "barbearia-rm",
+            storageBucket: "barbearia-rm.firebasestorage.app",
+            messagingSenderId: "512819922057",
+            appId: "1:512819922057:web:6a913791cb6435e4f63258"
+        };
+        
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        console.log('🔥 Firebase OK');
+
+        // ==========================================================
+        // VARIÁVEIS
+        // ==========================================================
+        var lojasCadastradas = [];
+        var lojaSelecionada = null;
+
+        // ==========================================================
+        // LOJAS
+        // ==========================================================
+        async function carregarLojas() {
+            const carrossel = document.getElementById('portalCarrossel');
+            
+            // Dados padrão
+            lojasCadastradas = [
+                { id: 'barbearia-rm', nome: 'Barbearia RM', slogan: 'Atitude, Estilo e Confiança', categoria: 'barbearia', logo: 'https://cdn-icons-png.flaticon.com/512/1995/1995574.png', stats: { estrelas: 4.8, cortes: 1200, distancia: 2.5 } },
+                { id: 'salao-beleza', nome: 'Salão Beleza Pura', slogan: 'Sua beleza em primeiro lugar', categoria: 'salao', logo: 'https://cdn-icons-png.flaticon.com/512/1995/1995515.png', stats: { estrelas: 4.5, cortes: 800, distancia: 1.8 } },
+                { id: 'estetica-vip', nome: 'Estética VIP', slogan: 'Cuidados especiais para você', categoria: 'estetica', logo: 'https://cdn-icons-png.flaticon.com/512/1995/1995525.png', stats: { estrelas: 4.9, cortes: 500, distancia: 3.2 } }
+            ];
+            
+            // Tentar carregar do Firebase
+            try {
+                const sn = await db.collection('lojas').get();
+                if (!sn.empty) {
+                    lojasCadastradas = sn.docs.map(d => ({ id: d.id, ...d.data() }));
+                }
+            } catch(e) {}
+            
+            // Renderizar carrossel
+            carrossel.innerHTML = lojasCadastradas.map((loja, i) => `
+                <div class="portal-loja-card" onclick="selecionarLoja(${i})" style="cursor:pointer;">
+                    <img src="${loja.logo}" class="portal-loja-card-logo" alt="${loja.nome}" 
+                         onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22><rect fill=%22%23D4A84B%22 width=%2250%22 height=%2250%22 rx=%2225%22/><text fill=%22%23000%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2220%22>🏪</text></svg>'">
+                    <div class="portal-loja-card-nome">${loja.nome}</div>
+                    <div class="portal-loja-card-categoria">${loja.categoria || 'Loja'}</div>
+                </div>
+            `).join('');
+            
+            // Selecionar primeira loja
+            selecionarLoja(0);
+            console.log('✅ Lojas carregadas:', lojasCadastradas.length);
+        }
+
+        function selecionarLoja(index) {
+            lojaSelecionada = lojasCadastradas[index];
+            
+            // Atualizar perfil
+            document.getElementById('portalNomeLoja').textContent = lojaSelecionada.nome;
+            document.getElementById('portalSloganLoja').textContent = lojaSelecionada.slogan || '';
+            document.getElementById('portalLogo').src = lojaSelecionada.logo;
+            document.getElementById('portalStats').innerHTML = 
+                `⭐ ${lojaSelecionada.stats?.estrelas || '5.0'} • ✂️ ${lojaSelecionada.stats?.cortes || '0'} • 📍 ${lojaSelecionada.stats?.distancia || '0'}km`;
+            
+            // Atualizar cards
+            document.querySelectorAll('.portal-loja-card').forEach((c, i) => c.classList.toggle('ativa', i === index));
+            
+            console.log('🏪 Selecionada:', lojaSelecionada.nome);
+        }
+
+        // ==========================================================
+        // AÇÕES
+        // ==========================================================
+        function entrarNaLoja() {
+            if (!lojaSelecionada) { alert('Selecione uma loja primeiro!'); return; }
+            
+            localStorage.setItem('barbeariaRM_loja', JSON.stringify(lojaSelecionada));
+            
+            document.getElementById('loginFormsContainer').style.display = 'block';
+            document.getElementById('loginFormCliente').style.display = 'block';
+            document.getElementById('loginFormBarbeiro').style.display = 'none';
+            
+            document.getElementById('loginFormsContainer').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function switchLoginTab(tipo) {
+            document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('loginFormCliente').style.display = tipo === 'cliente' ? 'block' : 'none';
+            document.getElementById('loginFormBarbeiro').style.display = tipo === 'barbeiro' ? 'block' : 'none';
+            document.querySelector(`.login-tab:nth-child(${tipo === 'cliente' ? 1 : 2})`).classList.add('active');
+        }
+
+        function loginCliente() {
+            const email = document.getElementById('loginEmailCliente').value;
+            const senha = document.getElementById('loginSenhaCliente').value;
+            if (!email || !senha) { alert('Preencha todos os campos!'); return; }
+            
+            db.collection('clientes').where('email', '==', email).where('senha', '==', senha).get()
+                .then(sn => {
+                    if (sn.empty) { alert('Email ou senha inválidos!'); return; }
+                    alert('✅ Bem-vindo! Redirecionando para a loja...');
+                    window.location.href = '../lojas/' + lojaSelecionada.id + '/index.html';
+                })
+                .catch(e => alert('Erro: ' + e.message));
+        }
+
+        function loginBarbeiro() {
+            const email = document.getElementById('loginEmailBarbeiro').value;
+            const senha = document.getElementById('loginSenhaBarbeiro').value;
+            if (!email || !senha) { alert('Preencha todos os campos!'); return; }
+            
+            db.collection('barbeiros').where('email', '==', email).where('senha', '==', senha).get()
+                .then(sn => {
+                    if (sn.empty) { alert('Email ou senha inválidos!'); return; }
+                    alert('✅ Bem-vindo! Redirecionando para a loja...');
+                    window.location.href = '../lojas/' + lojaSelecionada.id + '/index.html';
+                })
+                .catch(e => alert('Erro: ' + e.message));
+        }
+
+        function mostrarCadastroLoja() {
+            alert('📝 Formulário de cadastro de loja em breve!');
+        }
+
+        // ==========================================================
+        // TEMA
+        // ==========================================================
+        function toggleModoEscuro() {
+            document.body.classList.toggle('light-mode');
+        }
+
+        function mostrarToast(msg, tipo) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.className = 'toast-modern ' + (tipo || 'info');
+            toast.style.display = 'block';
+            setTimeout(() => toast.style.display = 'none', 3000);
+        }
+
+        // ==========================================================
+        // INICIAR
+        // ==========================================================
+        carregarLojas();
+        console.log('✅ Portal pronto!');
+    </script>
 </body>
 </html>
